@@ -13,7 +13,7 @@ export default function mostrarMenu() {
     5. Eliminar una mascota por nombre.
     6. Salir del programa.
     ============================================
-        Seleccione una opción entre 1 y 6:
+    Seleccione una opción entre 1 y 6:
     `);
 
     switch (menu) {

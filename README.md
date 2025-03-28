@@ -94,3 +94,8 @@ El código implementa un sistema de gestión de veterinaria utilizando un menú 
 - **Prompt/Alert**: Métodos nativos de JavaScript para interactuar con el usuario.
 
 
+## Link de Simulador de Veterinaria
+
+https://69695kt9-5500.use2.devtunnels.ms/
+
+**hash**: 59ef2ac0729b9241dbe7367bb63672d56dd71b0b
