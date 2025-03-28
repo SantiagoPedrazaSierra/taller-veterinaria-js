@@ -1,8 +1,8 @@
 // Importar mostrarMenu 
-import mostrarMenu  from './menu.js';
+import mostrarMenu from './menu.js';
 
 // Exportaciones
-export { registrarMascota, listarDatos };
+export { registrarMascota, listarDatos, buscarMascotaPorNombre, actualizarEstadoSalud, eliminarMascota };
 
 // Arreglo donde se guardarán los datos de las mascotas
 let datosMascotas = [];
@@ -76,4 +76,89 @@ function listarDatos() {
     mostrarMenu(); // Regresar al menú principal después de listar
 }
 
+// Función para buscar mascotas
+function buscarMascotaPorNombre() {
+    let nombreABuscar = prompt("Ingrese el nombre de la mascota que desea buscar:")
+    let mascotaEncontrada = datosMascotas.find(mascota => mascota.nombre.toLowerCase() === nombreABuscar.toLowerCase())
 
+    if (mascotaEncontrada) {
+        let mensaje = `
+        Mascota encontrada:
+        ============================================
+        Nombre: ${mascotaEncontrada.nombre}
+        Especie: ${mascotaEncontrada.especie}
+        Edad: ${mascotaEncontrada.edad}
+        Peso: ${mascotaEncontrada.peso}
+        Estado de salud: ${mascotaEncontrada.estadoSalud}
+        ============================================`
+
+        alert(mensaje)
+        mostrarMenu()
+    } else {
+        alert("No se encontro ninguna mascota con ese nombre.")
+    }
+}
+
+// Función para actualizar el estado de salud de una mascota
+function actualizarEstadoSalud() {
+    let nombreABuscar = prompt("Ingrese el nombre de la mascota que desea actualizar su estado de salud:")
+    let mascotaEncontrada = datosMascotas.find(mascota => mascota.nombre.toLowerCase() === nombreABuscar.toLowerCase())
+
+    if (mascotaEncontrada) {
+        let nuevoEstado = prompt(`
+        Mascota encontrada: 
+        ============================================
+        Nombre: ${mascotaEncontrada.nombre}
+        Estado de salud actual: ${mascotaEncontrada.estadoSalud}
+        ============================================
+        Ingrese el nuevo estado de salud:
+            `)
+
+        // Actualizar el estado de salud
+        mascotaEncontrada.estadoSalud = nuevoEstado
+
+        alert(`El estado de salud de ${mascotaEncontrada.nombre} ha sido actualizado a: ${mascotaEncontrada.estadoSalud}`)
+        mostrarMenu()
+
+    } else {
+        alert("No se encontro ninguna mascota con ese nombre.")
+    }
+}
+
+// Función para eliminar una mascota por nombre
+function eliminarMascota() {
+    let nombreABuscar = prompt("Ingrese el nombre de la mascota que desea eliminar:")
+    let mascotaEliminar = datosMascotas.find(mascota => mascota.nombre.toLowerCase() === nombreABuscar.toLowerCase());
+
+    if (mascotaEliminar) {
+        let mensaje = `
+        Mascota encontrada:
+        ============================================
+        Nombre: ${mascotaEliminar.nombre}
+        Especie: ${mascotaEliminar.especie}
+        Edad: ${mascotaEliminar.edad}
+        Peso: ${mascotaEliminar.peso}
+        Estado de salud: ${mascotaEliminar.estadoSalud}
+        ============================================
+        Esta es la mascota que desea eliminar (y/n):
+        `
+        let confirmacion = prompt(mensaje)
+
+        if ( confirmacion === "y") {
+            let index = datosMascotas.findIndex(mascota => mascota.nombre.toLowerCase() === nombreABuscar.toLowerCase())
+
+            // Eliminar la mascota de el arreglo
+            if (index !== -1) {
+                datosMascotas.splice(index, 1) // Elimina 1 elemento en la posicion de indice
+                alert(`La mascota ${mascotaEliminar.combre} ha sido eliminada correctamente.`)
+                mostrarMenu()
+            }
+        } else {
+            alert("La mascota no fue eliminada.")
+            mostrarMenu()
+        }
+    } else {
+        alert("No se encontro ninguna mascota con ese nombre.")
+        mostrarMenu()
+    }
+}
