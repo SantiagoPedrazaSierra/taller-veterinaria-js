@@ -7,8 +7,14 @@ export { registrarMascota, listarDatos, buscarMascotaPorNombre, actualizarEstado
 // Arreglo donde se guardarán los datos de las mascotas
 let datosMascotas = [];
 
+//Funcion que envuelve el setTimeout en una promesa para poder usar await
+
+function esperar(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms))
+}
+
 // Función para registrar una nueva mascota (con retraso y sin bucles infinitos)
-function registrarMascota() {
+async function registrarMascota() {
     let nombre = prompt("¿Cuál es el nombre de la mascota?");
     if (nombre === null) {
         mostrarMenu();
@@ -41,12 +47,17 @@ function registrarMascota() {
     `);
 
     if (confirmar?.toLowerCase() === "y") {
-        alert("Validando datos con el servidor... (espere 1.5 segundos)");
-        setTimeout(() => {
-            datosMascotas.push(datosMascota);
-            alert("¡Datos de la mascota guardados correctamente!");
-            mostrarMenu();
-        }, 1500);
+        alert("Validando datos con el servidor...");
+
+        // Usamos await para esperar 1.5s segundos
+        await esperar(1500)
+
+        // Agregamos los datos al arreglo
+        datosMascotas.push(datosMascota)
+        alert("¡Datos de la mascota guardados correctamente!")
+
+        // Mostramos el menu
+        mostrarMenu()
     } else {
         if (confirm("¿Desea volver al menú principal?")) {
             mostrarMenu();
@@ -74,21 +85,23 @@ function listarDatos() {
 }
 
 // Función para buscar mascotas (con retraso de 2 segundos)
-function buscarMascotaPorNombre() {
+async function buscarMascotaPorNombre() {
     let nombreABuscar = prompt("Ingrese el nombre de la mascota que desea buscar:");
     if (nombreABuscar === null) {
         mostrarMenu();
         return;
     }
 
-    alert("Buscando en la base de datos... (espere 2 segundos)");
-    setTimeout(() => {
-        let mascotaEncontrada = datosMascotas.find(mascota => 
-            mascota.nombre.toLowerCase() === nombreABuscar.toLowerCase()
-        );
+    alert("Buscando en la base de datos...");
+    let mascotaEncontrada = datosMascotas.find(mascota =>
+        mascota.nombre.toLowerCase() === nombreABuscar.toLowerCase()
+    );
 
-        if (mascotaEncontrada) {
-            let mensaje = `
+    // Usamos await para esperar 2 segundos
+    await esperar(2000)
+
+    if (mascotaEncontrada) {
+        let mensaje = `
             Mascota encontrada:
             ============================================
             Nombre: ${mascotaEncontrada.nombre}
@@ -97,30 +110,32 @@ function buscarMascotaPorNombre() {
             Peso: ${mascotaEncontrada.peso}
             Estado de salud: ${mascotaEncontrada.estadoSalud}
             ============================================`;
-            alert(mensaje);
-        } else {
-            alert("No se encontró ninguna mascota con ese nombre.");
-        }
-        mostrarMenu();
-    }, 2000);
+        alert(mensaje);
+    } else {
+        alert("No se encontró ninguna mascota con ese nombre.");
+    }
+    mostrarMenu();
 }
 
 // Función para actualizar el estado de salud (con retraso de 1 segundo)
-function actualizarEstadoSalud() {
+async function actualizarEstadoSalud() {
     let nombreABuscar = prompt("Ingrese el nombre de la mascota que desea actualizar:");
     if (nombreABuscar === null) {
         mostrarMenu();
         return;
     }
 
-    alert("Consultando registro veterinario... (espere 1 segundo)");
-    setTimeout(() => {
-        let mascotaEncontrada = datosMascotas.find(mascota => 
-            mascota.nombre.toLowerCase() === nombreABuscar.toLowerCase()
-        );
+    alert("Consultando registro veterinario...");
 
-        if (mascotaEncontrada) {
-            let nuevoEstado = prompt(`
+    // Usamos await para esperar 1 segundos
+    await esperar(1000)
+
+    let mascotaEncontrada = datosMascotas.find(mascota =>
+        mascota.nombre.toLowerCase() === nombreABuscar.toLowerCase()
+    );
+
+    if (mascotaEncontrada) {
+        let nuevoEstado = prompt(`
             Mascota encontrada: 
             ============================================
             Nombre: ${mascotaEncontrada.nombre}
@@ -128,14 +143,13 @@ function actualizarEstadoSalud() {
             ============================================
             Ingrese el nuevo estado de salud:
             `);
-            
-            mascotaEncontrada.estadoSalud = nuevoEstado;
-            alert(`Estado actualizado: ${nuevoEstado}`);
-        } else {
-            alert("Mascota no encontrada.");
-        }
-        mostrarMenu();
-    }, 1000);
+
+        mascotaEncontrada.estadoSalud = nuevoEstado;
+        alert(`Estado actualizado: ${nuevoEstado}`);
+    } else {
+        alert("Mascota no encontrada.");
+    }
+    mostrarMenu();
 }
 
 // Función para eliminar una mascota por nombre
@@ -146,7 +160,7 @@ function eliminarMascota() {
         return;
     }
 
-    let mascotaEliminar = datosMascotas.find(mascota => 
+    let mascotaEliminar = datosMascotas.find(mascota =>
         mascota.nombre.toLowerCase() === nombreABuscar.toLowerCase()
     );
 
@@ -164,7 +178,7 @@ function eliminarMascota() {
         `);
 
         if (confirmacion?.toLowerCase() === "y") {
-            let index = datosMascotas.findIndex(mascota => 
+            let index = datosMascotas.findIndex(mascota =>
                 mascota.nombre.toLowerCase() === nombreABuscar.toLowerCase()
             );
             datosMascotas.splice(index, 1);
